@@ -107,18 +107,18 @@ class Cache:
         """get a string"""
         return self.decode("utf-8")
 
-    def replay(func: Callable):
+    def replay(self, func: Callable):
         """
         Display the history of calls of a particular function
         """
-    key = Cache.store.__qualname__
-    inputs_key = f"{key}:inputs"
-    outputs_key = f"{key}:outputs"
+        key = self.store.__qualname__
+        inputs_key = f"{key}:inputs"
+        outputs_key = f"{key}:outputs"
 
-    inputs = cache._redis.lrange(inputs_key, 0, -1)
-    outputs = cache._redis.lrange(outputs_key, 0, -1)
+        inputs = self._redis.lrange(inputs_key, 0, -1)
+        outputs = self._redis.lrange(outputs_key, 0, -1)
 
-    print(f"{key} was called {len(inputs)} times:")
-    for input_data in inputs:
-        input_data = literal_eval(input_data.decode("utf-8"))
-        print(f"{key}(*{input_data})")
+        print(f"{key} was called {len(inputs)} times:")
+        for input_data in inputs:
+            input_data = literal_eval(input_data.decode("utf-8"))
+            print(f"{key}(*{input_data})")
