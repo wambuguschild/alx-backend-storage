@@ -111,7 +111,7 @@ class Cache:
         """
         Display the history of calls of a particular function
         """
-        key = self.store.__qualname__
+        key = func.__qualname__
         inputs_key = f"{key}:inputs"
         outputs_key = f"{key}:outputs"
 
@@ -119,6 +119,7 @@ class Cache:
         outputs = self._redis.lrange(outputs_key, 0, -1)
 
         print(f"{key} was called {len(inputs)} times:")
-        for input_data in inputs:
+        for input_data, output_data in zip(inputs, outputs):
             input_data = literal_eval(input_data.decode("utf-8"))
-            print(f"{key}(*{input_data})")
+            output_data = output_data.decode("utf-8")
+            print(f"{key}(*{input_data}) -> {output_data}")
