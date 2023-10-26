@@ -3,6 +3,7 @@
 
 import redis
 import requests
+import time
 from typing import Callable
 from functools import wraps
 
@@ -32,3 +33,12 @@ def get_page(url: str) -> str:
     """
     response = requests.get(url)
     return response.text
+
+
+if __name__ == '__main__':
+    url = 'http://google.com'
+    get_page(url)
+    print(redis.get(f"count:{url}"))
+    time.sleep(10)
+    print(redis.get(f"cached:{url}"))
+    print(redis.get(f"count:{url}"))
